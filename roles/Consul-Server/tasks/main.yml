@@ -1,0 +1,50 @@
+---
+# tasks file for roles/Consul
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: full
+  become: true  
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+  become: true
+
+- name: Install Consul
+  apt:
+    name: consul
+    state: latest
+
+- name: Install Envoy
+  apt:
+    name: getenvoy-envoy
+    state: latest    
+
+- name: Update Firewall
+  include_tasks: firewalld.yml   
+
+- name: Create Directory
+  include_tasks: dir.yml   
+
+- name: Upload File
+  include_tasks: upload-file.yml   
+
+- name: Copy tls certificate
+  include_tasks: tls.yml   
+
+- name: Enable and restart Consul
+  service:
+    name: consul
+    state: restarted
+    enabled: yes
+
+- name: Enable and restart Resolvd
+  service:
+    name: systemd-resolved
+    state: restarted
+    enabled: yes
+
+- name: Create ACL keys and rules
+  include_tasks: acl.yml

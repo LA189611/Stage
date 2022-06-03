@@ -1,0 +1,90 @@
+---
+# tasks file for roles/packages_NomadW
+
+- name: Install basic packages
+  apt:
+    name:
+      - ca-certificates 
+      - curl 
+      - gnupg 
+      - lsb-release
+      - nfs-common
+      - python3-apt
+      - aptitude
+    state: latest
+    autoremove: true
+
+- name: Add Docker
+  apt:
+    name:
+      - docker
+      - docker-compose
+    state: latest
+    update_cache: true
+  become: true
+
+- name: Enable and start Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add Java
+  apt:
+    name:
+      - default-jre
+      - default-jdk
+    state: latest
+
+- name: Add Kvm
+  apt:
+    name:
+      - qemu-kvm 
+      - libvirt-daemon-system 
+      - libvirt-clients 
+      - bridge-utils
+    state: latest 
+
+- name: Enable and start Kvm
+  service:
+    name: libvirtd
+    state: started
+    enabled: yes
+
+# - name: waypoint
+#   apt:
+#     name:
+#       - waypoint
+#     state: latest
+#   run_once: true  
+#   delegate_to: xnomad4      
+
+# - name: MySQL
+#   apt:
+#     name:
+#       - mysql-client
+#     state: latest  
+#   run_once: true  
+#   delegate_to: xnomad4
+
+# - name: Create Waypoint Directory
+#   file:
+#     path: /opt/waypoint/data
+#     state: directory
+#     owner: nomad
+#     group: nomad
+#     mode: 0775  
+#   run_once: true  
+#   delegate_to: xnomad4
+
+# - name: Create NFS Directory
+#   file:
+#     path: /mnt/nfs_clientshare
+#     state: directory
+#     owner: nomad
+#     group: nomad
+#     mode: 0775  
+
+# - name: Init NFS mount
+#   shell: mount 172.20.8.242:/mnt/nfs_share  /mnt/nfs_clientshare
+#

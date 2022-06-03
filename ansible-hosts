@@ -1,0 +1,28 @@
+[local]
+Ubuntu_WSL ansible_connection=local ansible_user=adrien
+
+[NomadServer]
+xnomad0 ansible_host=172.20.8.230 ansible_user=cloudmgr
+xnomad1 ansible_host=172.20.8.231 ansible_user=cloudmgr
+xnomad2 ansible_host=172.20.8.232 ansible_user=cloudmgr
+
+[NomadWorker]
+xnomad3 ansible_host=172.20.8.233 ansible_user=cloudmgr
+xnomad4 ansible_host=172.20.8.234 ansible_user=cloudmgr
+xnomad5 ansible_host=172.20.8.235 ansible_user=cloudmgr
+
+[ConsulServer]
+xconsul0 ansible_host=172.20.8.236 ansible_user=cloudmgr
+xconsul1 ansible_host=172.20.8.237 ansible_user=cloudmgr
+xconsul2 ansible_host=172.20.8.238 ansible_user=cloudmgr
+
+[Vault]
+xvault0 ansible_host=172.20.8.239 ansible_user=cloudmgr
+xvault1 ansible_host=172.20.8.240 ansible_user=cloudmgr
+xvault2 ansible_host=172.20.8.241 ansible_user=cloudmgr
+
+[Storage]
+xstorage0 ansible_host=172.20.8.242 ansible_user=cloudmgr
+
+[Traefik]
+xtraefik ansible_host=172.20.8.243 ansible_user=cloudmgr

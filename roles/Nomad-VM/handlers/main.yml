@@ -1,0 +1,18 @@
+---
+# handlers file for nomad
+
+- name: Restart nomad
+  systemd:
+    name: nomad
+    state: restarted
+    enabled: true
+
+- name: Reload kernel
+  systemd:
+    name: systemd-modules-load
+    state: restarted
+    enabled: true
+
+- name: Update CA
+  shell:
+    cmd: update-ca-certificates    

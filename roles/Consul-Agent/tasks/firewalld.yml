@@ -1,0 +1,31 @@
+---
+
+- name: Add TCP firewall
+  shell: 
+    cmd: ufw allow 8300,8301,8302,8400,8500,8502,8600/tcp
+  become: true
+
+- name: Add UDP firewall
+  shell: 
+    cmd: ufw allow 8301,8302,8502,8600/udp
+  become: true  
+
+- name: Add Iptables UDP Rules
+  shell:
+    cmd: iptables --table nat --append OUTPUT --destination localhost --protocol udp --match udp --dport 53 --jump REDIRECT --to-ports 8600
+  become: true
+
+- name: Add Iptables TCP Rules
+  shell:
+    cmd: iptables --table nat --append OUTPUT --destination localhost --protocol tcp --match tcp --dport 53 --jump REDIRECT --to-ports 8600
+  become: true
+
+- name: Save Iptables Rules
+  shell:
+    cmd: iptables-save
+  become: true
+
+- name: Reload Firewall
+  shell:
+    cmd: ufw reload
+  become: true

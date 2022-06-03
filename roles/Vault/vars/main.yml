@@ -1,0 +1,17 @@
+---
+# vars file for roles/Vault
+
+vault_tls_dir: "/etc/ssl/private"
+vault_data_dir: "/opt/vault/data"
+vault_ca_certificate_dir: "/usr/local/share/ca-certificates"
+
+vault_self_private_key: "{{ vault_tls_dir }}/self.cert.key"
+vault_self_certificate: "{{ vault_tls_dir }}/self.fullchain.cert.pem"
+vault_ca_certificate: "{{ vault_ca_certificate_dir }}/vault.ca.crt"
+
+vault_api_addr: "http://127.0.0.1:8200"
+vault_api_status: "{{ vault_api_addr }}/v1/sys/seal-status"
+
+vault_cluster: ["172.20.8.239", "172.20.8.240", "172.20.8.241"]
+
+vault_consul_addr: "http://172.20.8.236:8500"

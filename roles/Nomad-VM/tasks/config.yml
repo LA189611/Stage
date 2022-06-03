@@ -1,0 +1,40 @@
+- name: Gossip Nomad Encryption
+  shell: 
+    cmd: nomad operator keygen
+  register: nomad_encrypt_key
+  run_once: true
+  delegate_to: xnomad0
+
+- set_fact: 
+    nomad_encrypt: "{{ nomad_encrypt_key.stdout }}"
+  run_once: true
+  delegate_to: xnomad0
+
+- name: Write Nomad Config
+  template:
+    src: "nomad.hcl.j2"
+    dest: /etc/nomad.d/nomad.hcl
+    owner: nomad
+    group: nomad
+    mode: 0775
+  notify: Restart nomad
+
+- name: Write Nomad Service
+  copy:
+    src: nomad.service
+    dest: /usr/lib/systemd/system/nomad.service
+    owner: root
+    group: root
+    mode: 0775
+
+- name: Upload Hosts File
+  copy:
+    src: hosts
+    dest: /etc
+    mode: 0644
+
+- name: Start and Enable Nomad
+  service:
+    name: nomad
+    state: started
+    enabled: yes

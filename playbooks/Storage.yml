@@ -1,0 +1,10 @@
+---
+
+- hosts: local
+  roles:
+    - role: TF-Storage
+
+- hosts: Storage
+  roles:
+    - Storage
+    - Consul-Agent 

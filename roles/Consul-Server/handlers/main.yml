@@ -1,0 +1,14 @@
+---
+# handlers file for roles/consulTest
+
+- name: Restart-consul
+  service:
+    name: consul
+    state: restarted
+
+- name: Daemon-reload
+  systemd:
+    name: nomad
+    daemon_reload: true
+    state: started
+    enabled: true

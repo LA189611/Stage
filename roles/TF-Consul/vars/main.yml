@@ -1,0 +1,8 @@
+---
+# vars file for terraform
+
+Consul_cluster: /home/adrien/Terraform/Ubuntu-Linux/Consul-Cluster
+
+Consul_ca: /home/adrien/Terraform/Ubuntu-Linux/Consul-CA
+
+Cred : /home/adrien/.secrets

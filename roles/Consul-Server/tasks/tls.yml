@@ -1,0 +1,47 @@
+---
+
+- name: Upload CA
+  copy:
+    src: "{{ consul_ca_file }}"
+    dest: /etc/consul.d/.tls_cert
+    owner: consul
+    group: consul
+    mode: 0600
+
+- name: Upload CA Key
+  copy:
+    src: "{{ consul_ca_key_file }}"
+    dest: /etc/consul.d/.tls_cert
+    owner: consul
+    group: consul
+    mode: 0600
+  delegate_to: xconsul0
+  run_once: true
+
+- name: Upload Cert
+  copy:
+    src: "{{ item.src }}"
+    dest: /etc/consul.d/.tls_cert
+    owner: consul
+    group: consul
+    mode: 0600
+  delegate_to: "{{ item.delegate }}"
+  run_once: true
+  with_items:
+    - { src: 'mirahi-server-mirahi-0.pem', delegate: 'xconsul0' }
+    - { src: 'mirahi-server-mirahi-1.pem', delegate: 'xconsul1' }
+    - { src: 'mirahi-server-mirahi-2.pem', delegate: 'xconsul2' }
+
+- name: Upload Cert Key
+  copy:
+    src: "{{ item.src }}"
+    dest: /etc/consul.d/.tls_cert
+    owner: consul
+    group: consul
+    mode: 0600
+  delegate_to: "{{ item.delegate }}"
+  run_once: true
+  with_items:
+    - { src: 'mirahi-server-mirahi-0-key.pem', delegate: 'xconsul0' }
+    - { src: 'mirahi-server-mirahi-1-key.pem', delegate: 'xconsul1' }
+    - { src: 'mirahi-server-mirahi-2-key.pem', delegate: 'xconsul2' }

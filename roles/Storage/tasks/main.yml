@@ -1,0 +1,63 @@
+---
+# tasks file for roles/Storage
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: full
+  become: true  
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+  become: true
+  
+- name: Upload Hosts file
+  copy:
+    src: hosts
+    dest: /etc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install nfs
+  apt:
+    name: nfs-kernel-server
+    state: latest
+  become: true
+
+- name: Create nfs directory
+  file:
+    path: /mnt/nfs_share
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+  become: true
+
+- name: Add Config to file
+  shell: echo "/mnt/nfs_share 172.20.8.0/22(rw,sync,no_subtree_check)" >> /etc/exports
+  become : true
+
+- name: Validate exportfs
+  shell: exportfs -a
+  become : true
+
+- name: Reload nfs
+  shell: systemctl restart nfs-kernel-server
+  become : true
+
+- name: Add NFS Rule to firewall
+  shell: 
+    cmd: ufw allow from 172.20.8.0/22 to any port nfs
+  become: true
+
+- name: Add OpenSSH
+  shell: 
+    cmd: ufw allow OpenSSH  
+  become: true
+
+- name: Enable UFW 
+  shell: 
+    cmd: ufw reload
+  become: true

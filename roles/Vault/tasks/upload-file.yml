@@ -1,0 +1,33 @@
+- name: Upload Hosts file
+  become: true
+  copy:
+    src: hosts
+    dest: /etc
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Load storage keys
+  shell:
+    cmd: cat /home/adrien/.secrets/vault_storage.yml
+  register: vault_consul_token
+  run_once: true
+  delegate_to: Ubuntu_WSL
+
+- name: Write vault config file
+  become: true
+  template:
+    src: "vault.hcl.j2"
+    dest: /etc/vault.d/vault.hcl
+    owner: vault
+    group: vault
+    mode: 0775
+
+- name: Upload vault.service
+  become: true
+  copy:
+    src: vault.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0755

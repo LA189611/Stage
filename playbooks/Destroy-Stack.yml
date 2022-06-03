@@ -1,0 +1,48 @@
+
+- hosts: local
+
+  vars:
+    Cred: ~/.secrets
+    Vault_Cluster: ~/Terraform/Ubuntu-Linux/Vault-Cluster
+    Nomad_Cluster: ~/Terraform/Ubuntu-Linux/Nomad-Cluster
+    Consul_cluster: ~/Terraform/Ubuntu-Linux/Consul-Cluster
+    Consul_ca: ~/Terraform/Ubuntu-Linux/Consul-CA
+    Storage: ~/Terraform/Ubuntu-Linux/Storage
+
+  tasks:
+    - name: Destroy Consul cluster
+      community.general.terraform:
+        project_path: '{{ Consul_cluster }}'
+        state: absent
+        variables_file: "{{ Cred }}/credvSphere.json"
+        backend_config_files: 
+          - "{{ Cred }}/credMinIO.json"
+
+    - name: Destroy Consul CA
+      community.general.terraform:
+        project_path: "{{ Consul_ca }}"
+        state: absent
+
+    - name: "Destroy Nomad Cluster"
+      community.general.terraform:
+        project_path: "{{ Nomad_Cluster }}"
+        state: absent
+        variables_file: "{{ Cred }}/credvSphere.json"
+        backend_config_files:
+            - "{{ Cred }}/credMinIO.json"
+    
+    - name: "Destroy Vault Cluster"
+      community.general.terraform:
+        project_path: "{{ Vault_Cluster }}"
+        state: absent
+        variables_file: "{{ Cred }}/credvSphere.json"
+        backend_config_files:
+            - "{{ Cred }}/credMinIO.json"
+
+    - name: "Destroy Storage"
+      community.general.terraform:
+        project_path: "{{ Storage }}"
+        state: absent
+        variables_file: "{{ Cred }}/credvSphere.json"
+        backend_config_files:
+            - "{{ Cred }}/credMinIO.json"            

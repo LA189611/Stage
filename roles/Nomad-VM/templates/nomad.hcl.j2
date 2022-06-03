@@ -1,0 +1,67 @@
+datacenter = "{{ nomad_datacenter_name }}"
+data_dir = "{{ nomad_data_dir }}"
+name = "{{ inventory_hostname }}"
+bind_addr = "{{ ansible_facts['ens160']['ipv4']['address'] }}"
+
+{# tls {
+  http = true
+  rpc  = true
+  ca_file     = "{{ nomad_ca_certificate }}"
+  cert_file   = "{{ nomad_self_certificate }}"
+  key_file    = "{{ nomad_self_private_key }}"
+} #}
+
+{% if ansible_hostname in groups["NomadServer"] %}
+server {
+  enabled = true
+  bootstrap_expect = {{ nomad_bootstrap_expect }}
+  encrypt = "{{ nomad_encrypt }}"
+}
+
+client {
+  enabled = false
+}
+
+consul {
+  address = "{{ nomad_consul_server_address }}"
+  server_service_name = "nomad-server"
+  client_service_name = "nomad-worker"
+  auto_advertise = true
+  server_auto_join = true
+  client_auto_join = true
+  token = "{{ lookup('file', '/home/adrien/.secrets/server_token.yml') }}"
+} 
+ui {
+  enabled =  true
+}
+
+{% else %}
+client {
+  enabled = true
+}
+
+ui {
+  enabled = false
+}
+
+server {
+  enabled = false
+}
+
+ consul {
+  address = "{{ nomad_consul_worker_address }}"
+  server_service_name = "nomad-server"
+  client_service_name = "nomad-worker"
+  auto_advertise = true
+  server_auto_join = true
+  client_auto_join = true
+  token = "{{ lookup('file', '/home/adrien/.secrets/worker_token.yml') }}"
+}
+
+advertise {
+  http = "{{ ansible_facts['ens160']['ipv4']['address'] }}"
+  rpc  = "{{ ansible_facts['ens160']['ipv4']['address'] }}"
+  serf = "{{ ansible_facts['ens160']['ipv4']['address'] }}"
+}
+
+{% endif %}

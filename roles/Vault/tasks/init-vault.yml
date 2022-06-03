@@ -1,0 +1,23 @@
+- name: Get vault status
+  uri:
+    url: "{{ vault_api_status }}"
+    return_content: yes
+  register: current_vault_status
+
+- name: Node initialization
+  shell:
+    cmd: vault operator init -format json -address={{ vault_api_addr }}
+  register: init_vault
+  when:
+    - not current_vault_status.json.initialized
+
+- name: Store vault init keys
+  copy:
+    dest: "/home/adrien/.secrets/unseal_keys.yml"
+    content: |-
+      ---
+      {{ init_vault.stdout | from_json | to_nice_yaml }}
+  delegate_to: Ubuntu_WSL
+  run_once: true
+  when:
+    - not current_vault_status.json.initialized

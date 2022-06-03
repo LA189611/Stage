@@ -1,0 +1,26 @@
+# Run multiple playbook at one
+---
+  
+- hosts: local
+  roles:
+    - role: TF-Consul
+
+- hosts: ConsulServer
+  become: true
+  roles:
+    - Consul-Server
+
+- hosts: local
+  tasks:
+  - name: Grep the Bootstrap Token
+    shell: ssh cloudmgr@172.20.8.236 "sed -n '/SecretID:/p' /etc/consul.d/.acl_bootstrap/acl-token | cut -d' ' -f10"
+    register: token
+
+  - community.general.terraform:
+      project_path: "/home/adrien/Terraform/Ubuntu-Linux/Consul-Policy"
+      state: present
+      force_init: true
+      variables: 
+        consul_token: "{{ token.stdout }}"
+      backend_config_files:
+        - "/home/adrien/Terraform/Ubuntu-Linux/Consul-Policy/credMinIO.json"

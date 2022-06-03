@@ -1,0 +1,28 @@
+---
+
+- name: Upload consul.service
+  copy:
+    src: consul.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+  become: true 
+
+- name: Write consul config file
+  template:
+    src: "consul.hcl.j2"
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: 0775
+  become: true
+
+- name: Upload CA
+  copy:
+    src: "{{ consul_ca_file }}"
+    dest: /etc/consul.d/.tls_cert
+    owner: consul
+    group: consul
+    mode: 0775 
+  become: true

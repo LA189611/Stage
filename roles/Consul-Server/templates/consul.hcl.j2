@@ -1,0 +1,73 @@
+server_name = "{{ consul_server_name }}"
+datacenter  = "{{ consul_datacenter }}"
+data_dir    = "{{ consul_data_dir }}"
+node_name   = "{{ ansible_hostname }}"
+encrypt     = "{{ lookup('file', '/home/adrien/.secrets/gossip_key.yml') }}"
+ca_file     = "{{ consul_data_ca_dir }}/{{ consul_ca_file }}" 
+
+bind_addr = "0.0.0.0"
+
+addresses {
+  http  = "0.0.0.0"
+  https = "0.0.0.0"
+  grpc  = "0.0.0.0"
+  dns   = "0.0.0.0"
+}
+
+ports {
+  http  = 8500
+  https = 8501
+  grpc  = 8502
+  dns   = 8600
+}
+
+dns_config {
+  allow_stale = true
+  use_cache   = true
+}
+
+enable_syslog = true
+enable_debug  = true
+
+acl = {
+    enabled = true
+    default_policy = "allow"
+    enable_token_persistence = true
+}
+
+server = true
+bootstrap_expect = {{ consul_bootstrap_expect }}
+ui_config {
+    enabled = true
+}
+
+verify_incoming = false
+verify_outgoing = true
+verify_server_hostname = false
+
+auto_encrypt {
+    allow_tls = true
+}
+
+{% if inventory_hostname == "xconsul0" %}
+cert_file = "{{ consul_data_ca_dir }}/{{ consul_cert_serv_file }}0.pem"
+key_file = "{{ consul_data_ca_dir }}/{{ consul_cert_serv_file }}0-key.pem"
+
+{% elif inventory_hostname == "xconsul1" %}
+cert_file = "{{ consul_data_ca_dir }}/{{ consul_cert_serv_file }}1.pem"
+key_file = "{{ consul_data_ca_dir }}/{{ consul_cert_serv_file }}1-key.pem"
+
+{% else %}
+cert_file = "{{ consul_data_ca_dir }}/{{ consul_cert_serv_file }}2.pem"
+key_file = "{{ consul_data_ca_dir }}/{{ consul_cert_serv_file }}2-key.pem"
+
+{% endif %}
+
+client_addr = "0.0.0.0"
+start_join  = {{ consul_server_join | tojson }}
+
+connect {
+  enabled = true
+}
+
+recursors = ["{{ ansible_facts['ens160']['ipv4']['address'] }}"]

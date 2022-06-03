@@ -1,0 +1,19 @@
+# Run multiple playbook at one
+---
+ 
+- hosts: local
+  roles:
+    - TF-Nomad
+
+- hosts: NomadServer, NomadWorker
+  become: true
+  
+  roles:
+    - Nomad-VM
+    - Consul-Agent 
+
+- hosts: NomadWorker
+  become: true
+
+  roles:
+    - NomadW-Soft

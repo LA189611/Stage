@@ -1,0 +1,10 @@
+# tasks file for terraform
+
+- name: "Create NFS Storage"
+  community.general.terraform:
+    project_path: "{{ Project_Cluster }}"
+    state: present
+    force_init: yes
+    variables_file: "{{ Cred }}/credvSphere.json"
+    backend_config_files:
+        - "{{ Cred }}/credMinIO.json"

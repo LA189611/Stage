@@ -1,0 +1,9 @@
+
+- hosts: local
+  tasks:
+
+  - community.general.terraform:
+      project_path: "/home/adrien/Terraform/Ubuntu-Linux/Nomad-Jobs"
+      state: absent
+      backend_config_files:
+        - "/home/adrien/Terraform/Ubuntu-Linux/Nomad-Jobs/credMinIO.json"

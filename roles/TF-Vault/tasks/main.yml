@@ -1,0 +1,11 @@
+---
+# tasks file for roles/TF-Vault
+
+- name: "Create Vault Cluster"
+  community.general.terraform:
+    project_path: "{{ Project_Cluster }}"
+    state: present
+    force_init: yes
+    variables_file: "{{ Cred }}/credvSphere.json"
+    backend_config_files:
+        - "{{ Cred }}/credMinIO.json"

@@ -1,0 +1,17 @@
+---
+
+- name: Create data directory
+  file:
+    path: /opt/vault
+    state: directory
+    owner: vault
+    group: vault
+    mode: 0755   
+
+- name: Create data directory
+  file:
+    path: /opt/vault/data
+    state: directory
+    owner: vault
+    group: vault
+    mode: 0755

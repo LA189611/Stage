@@ -1,0 +1,54 @@
+- name: Upload Hosts file
+  copy:
+    src: hosts
+    dest: /etc
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Upload Resolv file
+  copy:
+    src: resolv.conf
+    dest: /etc
+    owner: root
+    group: root
+    mode: 0644    
+
+- name: Upload consul.service
+  copy:
+    src: consul.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create gossip keys 
+  shell:
+    cmd: consul keygen > /tmp/gossip_key.yml
+  register: "consul_encrypt" 
+  run_once: true
+  delegate_to: xconsul0
+
+- name: ansible copy file from remote to local
+  fetch:
+    src: /tmp/gossip_key.yml
+    dest: /home/adrien/.secrets/
+    flat: yes
+  run_once: true
+  delegate_to: xconsul0  
+
+- name: Write consul config file
+  template:
+    src: "consul.hcl.j2"
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: 0775
+
+- name: Write consul resolved file
+  copy:
+    src: consul.conf
+    dest: /etc/systemd/resolved.conf.d
+    owner: root
+    group: root
+    mode: 0775

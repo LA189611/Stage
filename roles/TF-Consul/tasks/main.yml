@@ -1,0 +1,17 @@
+---
+# tasks file for terraform
+
+- name: "Create Consul cluster"
+  community.general.terraform:
+    project_path: '{{ Consul_cluster }}'
+    state: present
+    force_init: yes
+    variables_file: "{{ Cred }}/credvSphere.json"
+    backend_config_files: 
+      - "{{ Cred }}/credMinIO.json"
+
+- name: "Create Consul CA"
+  community.general.terraform:
+    project_path: "{{ Consul_ca }}"
+    state: present
+    force_init: true

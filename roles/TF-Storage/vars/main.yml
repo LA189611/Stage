@@ -1,0 +1,6 @@
+---
+# vars file for terraform
+
+Project_Cluster: /home/adrien/Terraform/Ubuntu-Linux/Storage
+
+Cred: /home/adrien/.secrets

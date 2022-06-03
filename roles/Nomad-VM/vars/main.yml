@@ -1,0 +1,15 @@
+---
+# vars file for nomad
+
+nomad_datacenter_name: "mirahi"
+nomad_data_dir: "/opt/nomad/data"
+nomad_expected_directories: "{{ nomad_data_dir }}"
+nomad_bootstrap_expect: "3"
+nomad_home: /home/nomad
+nomad_tls_dir: /etc/pki/tls/private
+nomad_self_private_key: "{{ nomad_tls_dir }}/privkey.pem"
+nomad_self_certificate: "{{ nomad_tls_dir }}/fullchain.pem"
+nomad_ca_certificate_dir: /etc/ssl/certs
+nomad_ca_certificate: "{{ nomad_ca_certificate_dir }}/ca-bundle.crt"
+nomad_consul_worker_address: "localhost:8500"
+nomad_consul_server_address: "172.20.8.236:8500"

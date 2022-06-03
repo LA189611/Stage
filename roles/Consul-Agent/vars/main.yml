@@ -1,0 +1,10 @@
+---
+# vars file for roles/consulTest
+
+consul_server_name: "vSphere"
+consul_datacenter: "mirahi"
+consul_domain: "consul"
+consul_data_dir: "/opt/consul"
+consul_data_ca_dir: "/etc/consul.d/.tls_cert"
+consul_ca_file: mirahi-agent-ca.pem
+consul_server_join: ["172.20.8.236", "172.20.8.237", "172.20.8.238"]

@@ -1,0 +1,32 @@
+---
+- name: Load unseal keys
+  include_vars:
+    file: "/home/adrien/.secrets/unseal_keys.yml"
+    name: unseal_keys
+
+- assert:
+    that:
+      - unseal_keys is defined
+      - unseal_keys.recovery_keys_threshold is defined
+      - unseal_keys.unseal_keys_b64 is defined
+
+- name: Get vault status
+  uri:
+    url: "{{ vault_api_addr }}"
+    return_content: yes
+  register: current_vault_status
+  retries: 10
+  delay: 10  
+
+- set_fact:
+    _vault_unseal_minimum_keys: >-
+      {{ unseal_keys.unseal_keys_b64[:(unseal_keys.recovery_keys_threshold)] }}
+
+- name: Node unseal one-liner
+  shell: >-
+    {% set separator = joiner('&&') %}
+    {% for unseal_key in _vault_unseal_minimum_keys %}
+    {{ separator() }} vault operator unseal
+    -address={{ vault_api_addr }}
+    {{ unseal_key }}
+    {% endfor %}

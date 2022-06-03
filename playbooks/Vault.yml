@@ -1,0 +1,10 @@
+---
+
+- hosts: local
+  roles:
+    - TF-Vault
+
+- hosts: Vault
+  roles:
+    - Vault
+    - Consul-Agent   

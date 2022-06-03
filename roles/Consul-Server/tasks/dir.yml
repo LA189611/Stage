@@ -1,0 +1,41 @@
+---
+
+- name: Create data directory
+  file:
+    path: /opt/consul
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0775    
+
+- name: Create service directory
+  file:
+    path: /etc/consul.d/service
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0775     
+
+- name: Create tls_cert directory
+  file:
+    path: /etc/consul.d/.tls_cert
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0775 
+
+- name: Create acl directory
+  file:
+    path: /etc/consul.d/.acl_bootstrap
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0775
+
+- name: Create resolved directory
+  file:
+    path: /etc/systemd/resolved.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: 0775 

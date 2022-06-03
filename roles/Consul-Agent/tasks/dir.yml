@@ -1,0 +1,19 @@
+---
+
+- name: Create data directory
+  file:
+    path: /opt/consul
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0775    
+  become: true 
+
+- name: Create tls_cert directory
+  file:
+    path: /etc/consul.d/.tls_cert
+    state: directory
+    owner: consul
+    group: consul
+    mode: 0775
+  become: true

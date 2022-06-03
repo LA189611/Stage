@@ -1,0 +1,15 @@
+---
+- name: Check that the acl-bootsrap file exists
+  stat:
+    path: /etc/consul.d/.acl_bootstrap/acl-token
+  register: acl
+  delegate_to: xconsul0
+  run_once: true
+
+- name: Create Acl bootstrap
+  shell:
+    cmd: consul acl bootstrap > /etc/consul.d/.acl_bootstrap/acl-token
+  run_once: true
+  delegate_to: xconsul0
+  register: acl_token
+  when: acl.stat.exists == False

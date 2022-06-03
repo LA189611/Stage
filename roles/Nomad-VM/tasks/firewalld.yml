@@ -1,0 +1,17 @@
+---
+
+- name: Add TCP firewall
+  shell: 
+    cmd: ufw allow 4646,4647,4648,8080,9001,9002,9003/tcp
+
+- name: Add UDP firewall
+  shell: 
+    cmd: ufw allow 4646,8080/udp
+
+- name: Add OpenSSH
+  shell: 
+    cmd: ufw allow OpenSSH
+
+- name: Reload Firewall
+  shell:
+    cmd: ufw reload

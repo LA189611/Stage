@@ -1,0 +1,6 @@
+---
+# vars file for terraform
+
+Project_Cluster: /home/adrien/Terraform/Ubuntu-Linux/Nomad-Cluster
+
+Cred: /home/adrien/.secrets

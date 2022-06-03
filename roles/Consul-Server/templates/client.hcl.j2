@@ -1,0 +1,18 @@
+server = false
+ui_config {
+    enabled = false
+}
+
+verify_incoming = false
+verify_outgoing = true
+verify_server_hostname = false
+
+enable_local_script_checks = true
+
+auto_encrypt = {
+    tls = true
+}
+
+advertise_addr = "{{ ansible_facts['ens160']['ipv4']['address'] }}"
+client_addr = "{{ ansible_facts['ens160']['ipv4']['address'] }}"
+retry_join = {{ consul_server_join | tojson }}

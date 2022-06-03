@@ -1,0 +1,22 @@
+---
+
+- name: Allow everything and enable UFW
+  become: true
+  ufw:
+    state: enabled
+    policy: allow
+
+- name: Add TCP firewall
+  become: true
+  shell: 
+    cmd: ufw allow 8200,8201/tcp 
+
+- name: Save Iptables Rules
+  become: true
+  shell:
+    cmd: iptables-save
+
+- name: Reload Firewall
+  become: true
+  shell:
+    cmd: ufw reload

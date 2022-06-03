@@ -1,0 +1,21 @@
+# Run multiple playbook at one
+---
+  
+- hosts: local
+  vars:
+    Cred: ~/.secrets
+    Traefik: ~/Terraform/Ubuntu-Linux/Traefik
+
+  tasks:
+  - name: "Create Traefik Load Balancer"
+    community.general.terraform:
+      project_path: "{{ Traefik }}"
+      state: present
+      force_init: yes
+      variables_file: "{{ Cred }}/credvSphere.json"
+      backend_config_files:
+          - "{{ Cred }}/credMinIO.json"
+
+- hosts: Traefik
+  roles:
+    - role: Consul-Agent

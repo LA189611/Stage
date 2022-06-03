@@ -1,0 +1,20 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+172.20.8.230 xnomad0
+172.20.8.231 xnomad1
+172.20.8.232 xnomad2
+
+172.20.8.233 xnomad3 
+172.20.8.234 xnomad4
+172.20.8.235 xnomad5
+
+172.20.8.236 xconsul0
+172.20.8.237 xconsul1
+172.20.8.238 xconsul2
+
+172.20.8.239 xvault0
+172.20.8.241 xvault1
+172.20.8.242 xvault2
+
+172.20.8.243 xstorage0

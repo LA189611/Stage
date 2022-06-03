@@ -1,0 +1,4 @@
+
+- hosts: all, !local, !ConsulServer
+  roles:
+    - role: Consul-Agent

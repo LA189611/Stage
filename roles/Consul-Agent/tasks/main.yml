@@ -1,0 +1,29 @@
+---
+
+- name: Install Consul
+  apt:
+    name: consul
+    state: latest
+  become: true
+
+- name: Install Envoy
+  apt:
+    name: getenvoy-envoy
+    state: latest
+  become: true  
+
+- name: Create Directory
+  include_tasks: dir.yml   
+
+- name: Upload File
+  include_tasks: upload-file.yml
+
+- name: Add Firewall Rules
+  include_tasks: firewalld.yml
+
+- name: Enable and restart Consul
+  service:
+    name: consul
+    state: restarted
+    enabled: yes
+  become: true
